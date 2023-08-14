@@ -32,9 +32,7 @@ public class KianBot {
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.playing("music!  ||  /help"));
 
-        builder.enableIntents(GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.MESSAGE_CONTENT,
-                GatewayIntent.GUILD_VOICE_STATES);
+        builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
 
 //        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
 //        builder.setChunkingFilter(ChunkingFilter.ALL);
