@@ -3,7 +3,7 @@ package com.ktsocial.kianbot;
 import com.ktsocial.kianbot.commands.CommandManager;
 import com.ktsocial.kianbot.commands.commandhandlers.*;
 import com.ktsocial.kianbot.commands.leavinghandlers.AutoLeaving;
-import com.ktsocial.kianbot.commands.leavinghandlers.Disconnect;
+import com.ktsocial.kianbot.commands.leavinghandlers.DisconnectEvent;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -30,7 +30,7 @@ public class KianBot {
 
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
-        builder.setActivity(Activity.playing("music!  ||  /help"));
+        builder.setActivity(Activity.playing("music! || /help"));
 
         builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
 
@@ -43,7 +43,7 @@ public class KianBot {
         shardManager.addEventListener(new CommandManager(),
                 new PlayCommand(),
                 new AutoLeaving(),
-                new Disconnect(),
+                new DisconnectEvent(),
                 new StopCommand(),
                 new SkipCommand(),
                 new PauseCommand(),

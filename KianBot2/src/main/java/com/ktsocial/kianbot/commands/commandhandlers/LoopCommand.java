@@ -21,10 +21,12 @@ public class LoopCommand extends ListenerAdapter {
             final AudioTrackInfo info = track.getInfo();
 
             musicManager.scheduler.setRepeating(!musicManager.scheduler.isRepeating());
-            if (musicManager.scheduler.isRepeating())
+            if (musicManager.scheduler.isRepeating()) {
                 event.reply("Đang lặp lại " + info.title).queue();
-            else
+            }
+            else {
                 event.reply("Hủy lặp lại " + info.title).queue();
+            }
         }
     }
 }

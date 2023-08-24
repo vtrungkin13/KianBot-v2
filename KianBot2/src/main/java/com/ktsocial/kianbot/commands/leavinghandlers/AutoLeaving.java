@@ -23,7 +23,9 @@ public class AutoLeaving extends ListenerAdapter {
     }
 
     private boolean isAlone(Guild guild) {
-        if (guild.getAudioManager().getConnectedChannel() == null) return false;
+        if (guild.getAudioManager().getConnectedChannel() == null) {
+            return false;
+        }
         return guild.getAudioManager().getConnectedChannel().getMembers().stream()
                 .noneMatch(x ->
                         !x.getVoiceState().isDeafened()

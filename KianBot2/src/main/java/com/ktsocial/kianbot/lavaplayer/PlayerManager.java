@@ -57,20 +57,26 @@ public class PlayerManager {
         int s = t - 60 * m;
 
         String hour, min, sec;
-        if (h < 10)
+        if (h < 10) {
             hour = "0" + h;
-        else
+        }
+        else {
             hour = String.valueOf(h);
+        }
 
-        if (m < 10)
+        if (m < 10) {
             min = "0" + m;
-        else
+        }
+        else {
             min = String.valueOf(m);
+        }
 
-        if (s < 10)
+        if (s < 10) {
             sec = "0" + s;
-        else
+        }
+        else {
             sec = String.valueOf(s);
+        }
 
         return " (" + hour + ':' + min + ':' + sec + ").";
     }

@@ -33,7 +33,7 @@ public class PlayCommand extends ListenerAdapter {
             final Member member = event.getMember();
             final GuildVoiceState memVoice = member.getVoiceState();
 
-            //check weather the bot is in voice channel
+            //check whether the bot is in voice channel
             if (!selfVoice.inAudioChannel()) {
                 final AudioManager audioManager = event.getGuild().getAudioManager();
                 final AudioChannel memChannel = memVoice.getChannel();
