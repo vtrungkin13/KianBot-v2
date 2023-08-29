@@ -10,21 +10,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class NowplayingCommand extends ListenerAdapter {
 
-    @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        String command = event.getName();
+    public static void nowplayingCommandHandler(SlashCommandInteractionEvent event) {
+        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        final AudioPlayer audioPlayer = musicManager.audioPlayer;
+        final AudioTrack track = audioPlayer.getPlayingTrack();
 
-        if (command.equals("nowplaying")) {
-            final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
-            final AudioPlayer audioPlayer = musicManager.audioPlayer;
-            final AudioTrack track = audioPlayer.getPlayingTrack();
-
-            if (track == null) {
-                event.reply("Không có bài hát đang phát :o:").queue();
-                return;
-            }
-            final AudioTrackInfo info = track.getInfo();
-            event.reply("Đang phát :loud_sound:: " + info.title + " - " + info.author).queue();
+        if (track == null) {
+            event.reply("Không có bài hát đang phát :o:").queue();
+            return;
         }
+        final AudioTrackInfo info = track.getInfo();
+        event.reply("Đang phát :loud_sound:: " + info.title + " - " + info.author).queue();
     }
 }

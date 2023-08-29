@@ -8,9 +8,14 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,22 +64,19 @@ public class PlayerManager {
         String hour, min, sec;
         if (h < 10) {
             hour = "0" + h;
-        }
-        else {
+        } else {
             hour = String.valueOf(h);
         }
 
         if (m < 10) {
             min = "0" + m;
-        }
-        else {
+        } else {
             min = String.valueOf(m);
         }
 
         if (s < 10) {
             sec = "0" + s;
-        }
-        else {
+        } else {
             sec = String.valueOf(s);
         }
 
@@ -84,18 +86,35 @@ public class PlayerManager {
     public void loadAndPlay(TextChannel channel, final String trackUrl) {
         final GuildMusicManager musicManager = getMusicManager(channel.getGuild());
 
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor(channel.getJDA().getSelfUser().getName(), null,
+                channel.getJDA().getSelfUser().getAvatarUrl());
+        embed.setColor(Color.decode("#eba22b"));
+        embed.setTitle("Tìm thấy nhạc!");
+
+        Button playPauseBtn = Button.primary("playPauseBtn", Emoji.fromUnicode("U+23EF U+FE0F"));
+        Button nextTrackBtn = Button.primary("nextTrackBtn", Emoji.fromUnicode("U+23ED U+FE0F"));
+        Button stopBtn = Button.primary("stopBtn", Emoji.fromUnicode("U+23F9 U+FE0F"));
+        Button repeatBtn = Button.primary("repeatBtn", Emoji.fromUnicode("U+1F502"));
+
+        List<Button> buttons = new ArrayList<>(
+                List.of(playPauseBtn, nextTrackBtn, stopBtn, repeatBtn)
+        );
+
+
         audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
 
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
-                String trackLoadedMessage = ":notes: Thêm vào hàng đợi: " +
-                        track.getInfo().title +
-                        " by " +
+                String trackLoadedMessage = ":notes: " +
+                        track.getInfo().title + "\n" +
                         track.getInfo().author +
                         convertTime(track.getInfo().length / 1000);
 
-                channel.sendMessage(trackLoadedMessage).queue();
+                embed.addField("Thêm vào hàng đợi:", trackLoadedMessage, false);
+
+                channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
 
             }
 
@@ -106,26 +125,28 @@ public class PlayerManager {
                 if (trackUrl.startsWith("ytsearch")) {
                     musicManager.scheduler.queue(tracks.get(0));
 
-                    String searchedMusicLoadedMessage = ":notes: Thêm vào hàng đợi: " +
-                            tracks.get(0).getInfo().title +
-                            " by " +
+                    String searchedMusicLoadedMessage = ":notes: " +
+                            tracks.get(0).getInfo().title + "\n" +
                             tracks.get(0).getInfo().author +
                             convertTime(tracks.get(0).getInfo().length / 1000);
 
-                    channel.sendMessage(searchedMusicLoadedMessage).queue();
+                    embed.addField("Thêm vào hàng đợi:", searchedMusicLoadedMessage, false);
+
+                    channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
                 } else {
 
                     for (AudioTrack item : tracks) {
                         musicManager.scheduler.queue(item);
                     }
 
-                    String playlistLoadedMessage = ":notes: Thêm vào hàng đợi: " +
+                    String playlistLoadedMessage = ":notes: " +
                             tracks.size() +
                             " bài hát từ " +
                             playlist.getName();
 
-                    channel.sendMessage(playlistLoadedMessage).queue();
+                    embed.addField("Thêm vào hàng đợi:", playlistLoadedMessage, false);
 
+                    channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
                 }
 
             }

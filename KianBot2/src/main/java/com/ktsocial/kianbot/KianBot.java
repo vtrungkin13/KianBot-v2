@@ -40,17 +40,12 @@ public class KianBot {
         shardManager = builder.build();
 
         //register commands
-        shardManager.addEventListener(new CommandManager(),
+        shardManager.addEventListener(
+                new CommandManager(),
                 new PlayCommand(),
                 new AutoLeaving(),
                 new DisconnectEvent(),
-                new StopCommand(),
-                new SkipCommand(),
-                new PauseCommand(),
-                new ResumeCommand(),
-                new QueueCommand(),
-                new NowplayingCommand(),
-                new LoopCommand());
+                new ButtonsHandler());
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.ktsocial.kianbot.commands;
 
+import com.ktsocial.kianbot.commands.commandhandlers.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -27,7 +28,8 @@ public class CommandManager extends ListenerAdapter {
         //help command handler
         if (command.equals("help")) {
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setAuthor(event.getJDA().getSelfUser().getName(), null, event.getJDA().getSelfUser().getAvatarUrl());
+            embed.setAuthor(event.getJDA().getSelfUser().getName(),
+                    null, event.getJDA().getSelfUser().getAvatarUrl());
             embed.setColor(Color.decode("#eba22b"));
             embed.setTitle("Bot using slash command!!");
 
@@ -65,6 +67,23 @@ public class CommandManager extends ListenerAdapter {
                     }
                 }
             }
+            switch (command) {
+                case "pause" -> {
+                    PlayPauseCommand.playPauseCommandHandler(event);
+                }
+                case "skip" -> {
+                    SkipCommand.skipCommandHandler(event);
+                }
+                case "stop" -> {
+                    StopCommand.stopCommandHandler(event);
+                } case "loop" -> {
+                    LoopCommand.loopCommandHandler(event);
+                } case "nowplaying" -> {
+                    NowplayingCommand.nowplayingCommandHandler(event);
+                } case "queue" -> {
+                    QueueCommand.queueCommandHandler(event);
+                }
+            }
         }
     }
 
@@ -97,10 +116,7 @@ public class CommandManager extends ListenerAdapter {
         commandData.add(Commands.slash("skip", "Skip bài hát hiện tại!"));
 
         //pause command
-        commandData.add(Commands.slash("pause", "Tạm dừng nhạc!"));
-
-        //resume command
-        commandData.add(Commands.slash("resume", "Tiếp tục phát nhạc!"));
+        commandData.add(Commands.slash("pause", "Tạm dừng hoặc tiếp tục phát nhạc!"));
 
         //queue command
         commandData.add(Commands.slash("queue", "Xem hàng đợi!"));

@@ -7,17 +7,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class StopCommand extends ListenerAdapter {
 
-    @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        String command = event.getName();
+    public static void stopCommandHandler(SlashCommandInteractionEvent event) {
+        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        musicManager.scheduler.setRepeating(false);
+        musicManager.scheduler.player.stopTrack();
+        musicManager.scheduler.queue.clear();
 
-        if (command.equals("stop")) {
-            final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
-            musicManager.scheduler.setRepeating(false);
-            musicManager.scheduler.player.stopTrack();
-            musicManager.scheduler.queue.clear();
-
-            event.reply("Dừng nhạc :stop_button:").queue();
-        }
+        event.reply("Dừng nhạc :stop_button:").queue();
     }
 }
