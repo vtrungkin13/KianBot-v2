@@ -4,10 +4,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -16,9 +16,9 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerManager {
     private static PlayerManager INSTANCE;
@@ -26,13 +26,14 @@ public class PlayerManager {
     private final Map<Long, GuildMusicManager> musicManagers;
     private final AudioPlayerManager audioPlayerManager;
 
-    public PlayerManager() {
-        this.musicManagers = new ConcurrentHashMap<>();
+    private PlayerManager() {
+        this.musicManagers = new HashMap<>();
         this.audioPlayerManager = new DefaultAudioPlayerManager();
-        this.audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager());
+        YoutubeAudioSourceManager ytSource = new YoutubeAudioSourceManager(true);
+        this.audioPlayerManager.registerSourceManager(ytSource);
 
         AudioSourceManagers.registerRemoteSources(this.audioPlayerManager);
-        AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
+//        AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
 
     }
 
@@ -87,8 +88,7 @@ public class PlayerManager {
         final GuildMusicManager musicManager = getMusicManager(channel.getGuild());
 
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(channel.getJDA().getSelfUser().getName(), null,
-                channel.getJDA().getSelfUser().getAvatarUrl());
+        embed.setAuthor(channel.getJDA().getSelfUser().getName(), null, channel.getJDA().getSelfUser().getAvatarUrl());
         embed.setColor(Color.decode("#eba22b"));
         embed.setTitle("Tìm thấy nhạc!");
 
@@ -97,20 +97,14 @@ public class PlayerManager {
         Button stopBtn = Button.primary("stopBtn", Emoji.fromUnicode("U+23F9 U+FE0F"));
         Button repeatBtn = Button.primary("repeatBtn", Emoji.fromUnicode("U+1F502"));
 
-        List<Button> buttons = new ArrayList<>(
-                List.of(playPauseBtn, nextTrackBtn, stopBtn, repeatBtn)
-        );
-
+        List<Button> buttons = new ArrayList<>(List.of(playPauseBtn, nextTrackBtn, stopBtn, repeatBtn));
 
         audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
 
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
-                String trackLoadedMessage = ":notes: " +
-                        track.getInfo().title + "\n" +
-                        track.getInfo().author +
-                        convertTime(track.getInfo().length / 1000);
+                String trackLoadedMessage = ":notes: " + track.getInfo().title + "\n" + track.getInfo().author + convertTime(track.getInfo().length / 1000);
 
                 embed.addField("Thêm vào hàng đợi:", trackLoadedMessage, false);
 
@@ -122,13 +116,10 @@ public class PlayerManager {
             public void playlistLoaded(AudioPlaylist playlist) {
                 final List<AudioTrack> tracks = playlist.getTracks();
 
-                if (trackUrl.startsWith("ytsearch")) {
+                if (trackUrl.startsWith("ytsearch:")) {
                     musicManager.scheduler.queue(tracks.get(0));
 
-                    String searchedMusicLoadedMessage = ":notes: " +
-                            tracks.get(0).getInfo().title + "\n" +
-                            tracks.get(0).getInfo().author +
-                            convertTime(tracks.get(0).getInfo().length / 1000);
+                    String searchedMusicLoadedMessage = ":notes: " + tracks.get(0).getInfo().title + "\n" + tracks.get(0).getInfo().author + convertTime(tracks.get(0).getInfo().length / 1000);
 
                     embed.addField("Thêm vào hàng đợi:", searchedMusicLoadedMessage, false);
 
@@ -139,10 +130,7 @@ public class PlayerManager {
                         musicManager.scheduler.queue(item);
                     }
 
-                    String playlistLoadedMessage = ":notes: " +
-                            tracks.size() +
-                            " bài hát từ " +
-                            playlist.getName();
+                    String playlistLoadedMessage = ":notes: " + tracks.size() + " bài hát từ " + playlist.getName();
 
                     embed.addField("Thêm vào hàng đợi:", playlistLoadedMessage, false);
 
@@ -160,9 +148,6 @@ public class PlayerManager {
             public void loadFailed(FriendlyException exception) {
                 channel.sendMessage("Không load được nhạc :x:").queue();
             }
-
         });
     }
-
-
 }

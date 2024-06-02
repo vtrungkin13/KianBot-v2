@@ -28,14 +28,13 @@ public class CommandManager extends ListenerAdapter {
         //help command handler
         if (command.equals("help")) {
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setAuthor(event.getJDA().getSelfUser().getName(),
-                    null, event.getJDA().getSelfUser().getAvatarUrl());
+            embed.setAuthor(event.getJDA().getSelfUser().getName(), null, event.getJDA().getSelfUser().getAvatarUrl());
             embed.setColor(Color.decode("#eba22b"));
             embed.setTitle("Bot using slash command!!");
 
             String field = """
                     play + link/tênbàihát: phát nhạc
-                    skip: skip bài hát hiện tại
+                    skip: bỏ qua bài hát hiện tại
                     stop: dừng phát nhạc
                     pause: tạm dừng nhạc
                     resume: tiếp tục phát nhạc
@@ -46,7 +45,7 @@ public class CommandManager extends ListenerAdapter {
 
             embed.addField("Commands:", field, false);
             event.replyEmbeds(embed.build()).queue();
-        //other command check
+            //other command check
         } else {
             //user who use the command - command user
             final Member member = event.getMember();
@@ -76,11 +75,14 @@ public class CommandManager extends ListenerAdapter {
                 }
                 case "stop" -> {
                     StopCommand.stopCommandHandler(event);
-                } case "loop" -> {
+                }
+                case "loop" -> {
                     LoopCommand.loopCommandHandler(event);
-                } case "nowplaying" -> {
+                }
+                case "nowplaying" -> {
                     NowplayingCommand.nowplayingCommandHandler(event);
-                } case "queue" -> {
+                }
+                case "queue" -> {
                     QueueCommand.queueCommandHandler(event);
                 }
             }
@@ -104,16 +106,14 @@ public class CommandManager extends ListenerAdapter {
         commandData.add(Commands.slash("help", "Xem hướng dẫn sử dụng KianBot!"));
 
         //play command
-        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url",
-                "thêm link nhạc hoặc tên bài hát", true);
-        commandData.add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!")
-                .addOptions(musicUrlOption));
+        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thêm link nhạc hoặc tên bài hát", true);
+        commandData.add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!").addOptions(musicUrlOption));
 
         //stop command
         commandData.add(Commands.slash("stop", "Dừng phát nhạc!"));
 
         //skip command
-        commandData.add(Commands.slash("skip", "Skip bài hát hiện tại!"));
+        commandData.add(Commands.slash("skip", "Bỏ qua bài hát hiện tại!"));
 
         //pause command
         commandData.add(Commands.slash("pause", "Tạm dừng hoặc tiếp tục phát nhạc!"));
