@@ -1,5 +1,6 @@
 package com.ktsocial.kianbot.lavaplayer;
 
+import com.ktsocial.kianbot.commands.commandhandlers.CommandButtons;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -92,12 +93,7 @@ public class PlayerManager {
         embed.setColor(Color.decode("#eba22b"));
         embed.setTitle("Tìm thấy nhạc!");
 
-        Button playPauseBtn = Button.primary("playPauseBtn", Emoji.fromUnicode("U+23EF U+FE0F"));
-        Button nextTrackBtn = Button.primary("nextTrackBtn", Emoji.fromUnicode("U+23ED U+FE0F"));
-        Button stopBtn = Button.primary("stopBtn", Emoji.fromUnicode("U+23F9 U+FE0F"));
-        Button repeatBtn = Button.primary("repeatBtn", Emoji.fromUnicode("U+1F502"));
-
-        List<Button> buttons = new ArrayList<>(List.of(playPauseBtn, nextTrackBtn, stopBtn, repeatBtn));
+        List<Button> buttons = CommandButtons.buttons;
 
         audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
 
