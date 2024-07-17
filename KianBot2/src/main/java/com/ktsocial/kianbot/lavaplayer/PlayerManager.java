@@ -1,6 +1,6 @@
 package com.ktsocial.kianbot.lavaplayer;
 
-import com.ktsocial.kianbot.commands.commandhandlers.CommandButtons;
+import com.ktsocial.kianbot.event_handlers.button_events.CommandButtons;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;

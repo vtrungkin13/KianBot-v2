@@ -1,17 +1,16 @@
 package com.ktsocial.kianbot;
 
-import com.ktsocial.kianbot.commands.CommandManager;
-import com.ktsocial.kianbot.commands.commandhandlers.*;
-import com.ktsocial.kianbot.commands.leavinghandlers.AutoLeaving;
-import com.ktsocial.kianbot.commands.leavinghandlers.DisconnectEvent;
+import com.ktsocial.kianbot.event_handlers.CommandManager;
+import com.ktsocial.kianbot.event_handlers.button_events.ButtonsHandler;
+import com.ktsocial.kianbot.event_handlers.command_events.PlayCommand;
+import com.ktsocial.kianbot.event_handlers.leaving_handlers.AutoLeaving;
+import com.ktsocial.kianbot.event_handlers.leaving_handlers.DisconnectEvent;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
