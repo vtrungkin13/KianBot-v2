@@ -9,7 +9,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ButtonsHandler extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
-        String buttonId = event.getButton().getId();
+        String buttonId = event.getComponentId();
         Guild guild = event.getGuild();
         if (buttonId == null || guild == null) {
             return;
@@ -32,7 +33,7 @@ public class ButtonsHandler extends ListenerAdapter {
         switch (buttonId) {
             case "playPauseBtn" -> {
                 MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(musicManager, channel);
-                event.replyEmbeds(playPauseEmbed).addActionRow(buttons).queue();
+                event.replyEmbeds(playPauseEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
             case "nextTrackBtn" -> {
                 if (audioPlayer.getPlayingTrack() == null) {
@@ -40,7 +41,7 @@ public class ButtonsHandler extends ListenerAdapter {
                     return;
                 }
                 MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicManager, audioPlayer, channel);
-                event.replyEmbeds(skipEmbed).addActionRow(buttons).queue();
+                event.replyEmbeds(skipEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
             case "stopBtn" -> {
                 StopEventHandler.Handle(musicManager);
@@ -48,7 +49,7 @@ public class ButtonsHandler extends ListenerAdapter {
             }
             case "repeatBtn" -> {
                 MessageEmbed loopEmbed = LoopEventHandler.BuildEmbed(musicManager, channel);
-                event.replyEmbeds(loopEmbed).addActionRow(buttons).queue();
+                event.replyEmbeds(loopEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
         }
     }

@@ -12,6 +12,10 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.api.audio.AudioModuleConfig;
+import moe.kyokobot.libdave.DaveFactory;
+import moe.kyokobot.libdave.NativeDaveFactory;
+import moe.kyokobot.libdave.jda.LDJDADaveSessionFactory;
 
 import javax.security.auth.login.LoginException;
 
@@ -34,6 +38,9 @@ public class KianBot {
         builder.setActivity(Activity.playing("music! || /help"));
 
         builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
+        DaveFactory daveFactory = new NativeDaveFactory();
+        builder.setAudioModuleConfig(new AudioModuleConfig()
+                .withDaveSessionFactory(new LDJDADaveSessionFactory(daveFactory)));
 
 //        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
 //        builder.setChunkingFilter(ChunkingFilter.ALL);
@@ -43,7 +50,6 @@ public class KianBot {
         //register commands
         shardManager.addEventListener(
                 new CommandManager(),
-                new PlayCommand(),
                 new AutoLeaving(),
                 new DisconnectEvent(),
                 new ButtonsHandler());

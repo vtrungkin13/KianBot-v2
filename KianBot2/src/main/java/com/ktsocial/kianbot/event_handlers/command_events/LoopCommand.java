@@ -13,7 +13,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.awt.*;
 import java.util.List;
@@ -32,6 +33,6 @@ public class LoopCommand extends ListenerAdapter {
         MessageEmbed loopEmbed = LoopEventHandler.BuildEmbed(musicManager, channel);
         List<Button> buttons = CommandButtons.buttons;
 
-        event.replyEmbeds(loopEmbed).addActionRow(buttons).queue();
+        event.replyEmbeds(loopEmbed).addComponents(ActionRow.of(buttons)).queue();
     }
 }

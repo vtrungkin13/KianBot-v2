@@ -12,8 +12,21 @@ public class AutoLeaving extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        if (event.getChannelLeft() == null) {
+            return;
+        }
+        if (event.getMember().getUser().isBot()) {
+            return;
+        }
         final AudioManager audioManager = event.getGuild().getAudioManager();
+        if (audioManager.getConnectedChannel() == null) {
+            return;
+        }
+        if (!event.getChannelLeft().equals(audioManager.getConnectedChannel())) {
+            return;
+        }
+
+        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
         if (isAlone(event.getGuild())) {
             musicManager.scheduler.setRepeating(false);
             musicManager.scheduler.player.stopTrack();

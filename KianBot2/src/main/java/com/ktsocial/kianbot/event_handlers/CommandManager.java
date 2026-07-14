@@ -47,6 +47,7 @@ public class CommandManager extends ListenerAdapter {
             //check command user is in voice channel
             if (!memberVoiceState.inAudioChannel()) {
                 event.reply("Bạn chưa vào kênh thoại").queue();
+                return;
             } else {
                 //get the bot and voice state of bot
                 final Member bot = guild.getSelfMember();
@@ -63,12 +64,16 @@ public class CommandManager extends ListenerAdapter {
                     }
                     if (!memberVoiceChannel.equals(botVoiceChannel)) {
                         event.reply("Bạn đang ở khác kênh thoại với bot").queue();
+                        return;
                     }
-                } else if (!command.equals("play")) {
+                } else if (!command.equals("play") && !command.equals("join")) {
                     event.reply("Bot chưa vào kênh thoại").queue();
+                    return;
                 }
             }
             switch (command) {
+                case "play" -> PlayCommand.playCommandHandler(event);
+                case "join" -> JoinCommand.joinCommandHandler(event);
                 case "pause" -> PlayPauseCommand.playPauseCommandHandler(event);
                 case "skip" -> SkipCommand.skipCommandHandler(event);
                 case "stop" -> StopCommand.stopCommandHandler(event);
@@ -98,6 +103,9 @@ public class CommandManager extends ListenerAdapter {
         //play command
         OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thêm link nhạc hoặc tên bài hát", true);
         commandData.add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!").addOptions(musicUrlOption));
+
+        //join command
+        commandData.add(Commands.slash("join", "Yêu cầu bot tham gia kênh thoại của bạn!"));
 
         //stop command
         commandData.add(Commands.slash("stop", "Dừng phát nhạc!"));

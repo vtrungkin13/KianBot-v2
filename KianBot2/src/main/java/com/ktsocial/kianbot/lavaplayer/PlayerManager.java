@@ -13,7 +13,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class PlayerManager {
 
                 embed.addField("Thêm vào hàng đợi:", trackLoadedMessage, false);
 
-                channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
+                channel.sendMessageEmbeds(embed.build()).addComponents(ActionRow.of(buttons)).queue();
 
             }
 
@@ -119,7 +120,7 @@ public class PlayerManager {
 
                     embed.addField("Thêm vào hàng đợi:", searchedMusicLoadedMessage, false);
 
-                    channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
+                    channel.sendMessageEmbeds(embed.build()).addComponents(ActionRow.of(buttons)).queue();
                 } else {
 
                     for (AudioTrack item : tracks) {
@@ -130,7 +131,7 @@ public class PlayerManager {
 
                     embed.addField("Thêm vào hàng đợi:", playlistLoadedMessage, false);
 
-                    channel.sendMessageEmbeds(embed.build()).addActionRow(buttons).queue();
+                    channel.sendMessageEmbeds(embed.build()).addComponents(ActionRow.of(buttons)).queue();
                 }
 
             }
