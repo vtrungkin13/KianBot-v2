@@ -5,9 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
-import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
-import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -28,28 +26,28 @@ public class CommandManager extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        //help command handler
+        // help command handler
         if (command.equals("help")) {
             HelpCommand.helpCommandHandler(event);
-            //other command check
+            // other command check
         } else {
-            //user who use the command - command user
+            // user who use the command - command user
             final Member member = event.getMember();
             if (member == null) {
                 return;
             }
-            //the voice state of command user
+            // the voice state of command user
             final GuildVoiceState memberVoiceState = member.getVoiceState();
             if (memberVoiceState == null) {
                 return;
             }
 
-            //check command user is in voice channel
+            // check command user is in voice channel
             if (!memberVoiceState.inAudioChannel()) {
                 event.reply("Bạn chưa vào kênh thoại").queue();
                 return;
             } else {
-                //get the bot and voice state of bot
+                // get the bot and voice state of bot
                 final Member bot = guild.getSelfMember();
                 final GuildVoiceState botVoiceState = bot.getVoiceState();
                 if (botVoiceState == null) {
@@ -84,47 +82,51 @@ public class CommandManager extends ListenerAdapter {
         }
     }
 
-    @Override
-    public void onGuildReady(@NotNull GuildReadyEvent event) {
-        registerCommands(event);
-    }
+    // @Override
+    // public void onGuildReady(@NotNull GuildReadyEvent event) {
+    // // Clear any guild-specific slash commands to avoid duplicates with global
+    // commands
+    // event.getGuild().updateCommands().queue();
+    // }
 
     @Override
-    public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        registerCommands(event);
-    }
-
-    private void registerCommands(GenericGuildEvent event) {
+    public void onReady(@NotNull ReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
 
-        //help command
+        // help command
         commandData.add(Commands.slash("help", "Xem hướng dẫn sử dụng KianBot!"));
 
-        //play command
-        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thêm link nhạc hoặc tên bài hát", true);
-        commandData.add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!").addOptions(musicUrlOption));
+        // play command
+        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thêm link nhạc hoặc tên bài hát",
+                true);
+        commandData
+                .add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!").addOptions(musicUrlOption));
 
-        //join command
+        // join command
         commandData.add(Commands.slash("join", "Yêu cầu bot tham gia kênh thoại của bạn!"));
 
-        //stop command
+        // stop command
         commandData.add(Commands.slash("stop", "Dừng phát nhạc!"));
 
-        //skip command
+        // skip command
         commandData.add(Commands.slash("skip", "Bỏ qua bài hát hiện tại!"));
 
-        //pause command
+        // pause command
         commandData.add(Commands.slash("pause", "Tạm dừng hoặc tiếp tục phát nhạc!"));
 
-        //queue command
+        // queue command
         commandData.add(Commands.slash("queue", "Xem hàng đợi!"));
 
-        //nowplaying command
+        // nowplaying command
         commandData.add(Commands.slash("nowplaying", "Xem bài hát hiện tại!"));
 
-        //loop command
+        // loop command
         commandData.add(Commands.slash("loop", "Lặp lại bài hát hiện tại!"));
 
-        event.getGuild().updateCommands().addCommands(commandData).queue();
+        event.getJDA().updateCommands().addCommands(commandData).queue(
+                success -> {
+                },
+                error -> {
+                });
     }
 }

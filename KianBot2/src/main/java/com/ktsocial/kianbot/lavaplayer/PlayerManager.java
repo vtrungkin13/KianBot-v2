@@ -12,12 +12,10 @@ import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

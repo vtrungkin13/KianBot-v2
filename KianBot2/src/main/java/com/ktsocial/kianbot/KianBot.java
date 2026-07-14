@@ -2,7 +2,6 @@ package com.ktsocial.kianbot;
 
 import com.ktsocial.kianbot.event_handlers.CommandManager;
 import com.ktsocial.kianbot.event_handlers.button_events.ButtonsHandler;
-import com.ktsocial.kianbot.event_handlers.command_events.PlayCommand;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.AutoLeaving;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.DisconnectEvent;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -38,9 +37,14 @@ public class KianBot {
         builder.setActivity(Activity.playing("music! || /help"));
 
         builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
-        DaveFactory daveFactory = new NativeDaveFactory();
-        builder.setAudioModuleConfig(new AudioModuleConfig()
-                .withDaveSessionFactory(new LDJDADaveSessionFactory(daveFactory)));
+        try {
+            DaveFactory daveFactory = new NativeDaveFactory();
+            builder.setAudioModuleConfig(new AudioModuleConfig()
+                    .withDaveSessionFactory(new LDJDADaveSessionFactory(daveFactory)));
+            System.out.println("Discord DAVE (End-to-End Encryption) enabled successfully.");
+        } catch (Throwable t) {
+            System.err.println("Warning: Could not enable Discord DAVE voice encryption (missing or incompatible native libraries for this platform). Falling back to standard voice connection. Error: " + t.getMessage());
+        }
 
 //        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
 //        builder.setChunkingFilter(ChunkingFilter.ALL);
