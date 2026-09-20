@@ -10,17 +10,17 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class LoopEventHandler {
     public static MessageEmbed BuildEmbed(GuildMusicManager musicManager, TextChannel channel) {
-        AudioPlayer audioPlayer = musicManager.audioPlayer;
+        AudioPlayer audioPlayer = musicManager.getAudioPlayer();
         AudioTrack track = audioPlayer.getPlayingTrack();
         AudioTrackInfo info = track.getInfo();
 
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
-        musicManager.scheduler.setRepeating(!musicManager.scheduler.isRepeating());
+        musicManager.getScheduler().setRepeating(!musicManager.getScheduler().isRepeating());
 
-        if (musicManager.scheduler.isRepeating()) {
-            embed.setTitle("Đang lặp lại " + info.title);
+        if (musicManager.getScheduler().isRepeating()) {
+            embed.setTitle("Äang láº·p láº¡i " + info.title);
         } else {
-            embed.setTitle("Hủy lặp lại " + info.title);
+            embed.setTitle("Há»§y láº·p láº¡i " + info.title);
         }
 
         return embed.build();

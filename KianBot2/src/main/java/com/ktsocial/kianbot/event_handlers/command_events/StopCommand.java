@@ -2,7 +2,7 @@ package com.ktsocial.kianbot.event_handlers.command_events;
 
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.StopEventHandler;
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,7 +14,7 @@ public class StopCommand extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
         StopEventHandler.Handle(musicManager);
 
         event.reply("Dừng nhạc :stop_button:").queue();

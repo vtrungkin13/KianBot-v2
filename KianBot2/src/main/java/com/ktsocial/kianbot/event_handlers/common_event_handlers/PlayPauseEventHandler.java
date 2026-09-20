@@ -10,12 +10,12 @@ public class PlayPauseEventHandler {
     public static MessageEmbed BuildEmbed(GuildMusicManager musicManager, TextChannel channel) {
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
 
-        if (!musicManager.scheduler.player.isPaused()) {
-            musicManager.scheduler.player.setPaused(true);
-            embed.setTitle("Tạm dừng nhạc :pause_button:");
+        if (!musicManager.getScheduler().isPaused()) {
+            musicManager.getScheduler().pause();
+            embed.setTitle("Táº¡m dá»«ng nháº¡c :pause_button:");
         } else {
-            musicManager.scheduler.player.setPaused(false);
-            embed.setTitle("Tiếp tục phát nhạc :arrow_forward:");
+            musicManager.getScheduler().resume();
+            embed.setTitle("Tiáº¿p tá»¥c phÃ¡t nháº¡c :arrow_forward:");
         }
 
         return embed.build();

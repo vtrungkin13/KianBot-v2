@@ -48,7 +48,7 @@ public class CommandManager extends ListenerAdapter {
 
             // check command user is in voice channel
             if (!memberVoiceState.inAudioChannel()) {
-                event.reply("Bạn chưa vào kênh thoại").queue();
+                event.reply("Báº¡n chÆ°a vÃ o kÃªnh thoáº¡i").queue();
                 return;
             } else {
                 // get the bot and voice state of bot
@@ -65,11 +65,11 @@ public class CommandManager extends ListenerAdapter {
                         return;
                     }
                     if (!memberVoiceChannel.equals(botVoiceChannel)) {
-                        event.reply("Bạn đang ở khác kênh thoại với bot").queue();
+                        event.reply("Báº¡n Ä‘ang á»Ÿ khÃ¡c kÃªnh thoáº¡i vá»›i bot").queue();
                         return;
                     }
                 } else if (!command.equals("play") && !command.equals("join")) {
-                    event.reply("Bot chưa vào kênh thoại").queue();
+                    event.reply("Bot chÆ°a vÃ o kÃªnh thoáº¡i").queue();
                     return;
                 }
             }
@@ -98,34 +98,34 @@ public class CommandManager extends ListenerAdapter {
         List<CommandData> commandData = new ArrayList<>();
 
         // help command
-        commandData.add(Commands.slash("help", "Xem hướng dẫn sử dụng KianBot!"));
+        commandData.add(Commands.slash("help", "Xem hÆ°á»›ng dáº«n sá»­ dá»¥ng KianBot!"));
 
         // play command
-        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thêm link nhạc hoặc tên bài hát",
+        OptionData musicUrlOption = new OptionData(OptionType.STRING, "name-or-url", "thÃªm link nháº¡c hoáº·c tÃªn bÃ i hÃ¡t",
                 true);
         commandData
-                .add(Commands.slash("play", "Phát nhạc bằng link nhạc hoặc tên bài hát!").addOptions(musicUrlOption));
+                .add(Commands.slash("play", "PhÃ¡t nháº¡c báº±ng link nháº¡c hoáº·c tÃªn bÃ i hÃ¡t!").addOptions(musicUrlOption));
 
         // join command
-        commandData.add(Commands.slash("join", "Yêu cầu bot tham gia kênh thoại của bạn!"));
+        commandData.add(Commands.slash("join", "YÃªu cáº§u bot tham gia kÃªnh thoáº¡i cá»§a báº¡n!"));
 
         // stop command
-        commandData.add(Commands.slash("stop", "Dừng phát nhạc!"));
+        commandData.add(Commands.slash("stop", "Dá»«ng phÃ¡t nháº¡c!"));
 
         // skip command
-        commandData.add(Commands.slash("skip", "Bỏ qua bài hát hiện tại!"));
+        commandData.add(Commands.slash("skip", "Bá» qua bÃ i hÃ¡t hiá»‡n táº¡i!"));
 
         // pause command
-        commandData.add(Commands.slash("pause", "Tạm dừng hoặc tiếp tục phát nhạc!"));
+        commandData.add(Commands.slash("pause", "Táº¡m dá»«ng hoáº·c tiáº¿p tá»¥c phÃ¡t nháº¡c!"));
 
         // queue command
-        commandData.add(Commands.slash("queue", "Xem hàng đợi!"));
+        commandData.add(Commands.slash("queue", "Xem hÃ ng Ä‘á»£i!"));
 
         // nowplaying command
-        commandData.add(Commands.slash("nowplaying", "Xem bài hát hiện tại!"));
+        commandData.add(Commands.slash("nowplaying", "Xem bÃ i hÃ¡t hiá»‡n táº¡i!"));
 
         // loop command
-        commandData.add(Commands.slash("loop", "Lặp lại bài hát hiện tại!"));
+        commandData.add(Commands.slash("loop", "Láº·p láº¡i bÃ i hÃ¡t hiá»‡n táº¡i!"));
 
         event.getJDA().updateCommands().addCommands(commandData).queue(
                 success -> LOGGER.info("Registered {} slash commands for JDA instance {}.", commandData.size(), event.getJDA().getSelfUser().getId()),

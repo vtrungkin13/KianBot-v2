@@ -1,7 +1,7 @@
 package com.ktsocial.kianbot.event_handlers.command_events;
 
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -16,8 +16,8 @@ public class NowPlayingCommand extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-        final AudioPlayer audioPlayer = musicManager.audioPlayer;
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
+        final AudioPlayer audioPlayer = musicManager.getAudioPlayer();
         final AudioTrack track = audioPlayer.getPlayingTrack();
 
         if (track == null) {

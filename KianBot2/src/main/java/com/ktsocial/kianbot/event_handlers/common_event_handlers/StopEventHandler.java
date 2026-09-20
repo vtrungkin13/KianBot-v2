@@ -4,8 +4,8 @@ import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
 
 public class StopEventHandler {
     public static void Handle(GuildMusicManager musicManager) {
-        musicManager.scheduler.setRepeating(false);
-        musicManager.scheduler.player.stopTrack();
-        musicManager.scheduler.queue.clear();
+        musicManager.getScheduler().setRepeating(false);
+        musicManager.getScheduler().stop();
+        musicManager.getScheduler().clearQueue();
     }
 }

@@ -1,6 +1,6 @@
 package com.ktsocial.kianbot.event_handlers.command_events;
 
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -60,7 +60,7 @@ public class PlayCommand {
         }
 
         TextChannel textChannel = (TextChannel) channel;
-        PlayerManager.getInstance().loadAndPlay(textChannel, link);
+        MusicService.getInstance().loadAndPlay(textChannel, link);
         event.reply("Đang load nhạc!").queue();
     }
 

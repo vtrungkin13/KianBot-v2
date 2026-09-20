@@ -1,7 +1,7 @@
 package com.ktsocial.kianbot.event_handlers.leaving_handlers;
 
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -26,11 +26,11 @@ public class AutoLeaving extends ListenerAdapter {
             return;
         }
 
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(event.getGuild());
         if (isAlone(event.getGuild())) {
-            musicManager.scheduler.setRepeating(false);
-            musicManager.scheduler.player.stopTrack();
-            musicManager.scheduler.queue.clear();
+            musicManager.getScheduler().setRepeating(false);
+            musicManager.getScheduler().stop();
+            musicManager.getScheduler().clearQueue();
             audioManager.closeAudioConnection();
         }
     }

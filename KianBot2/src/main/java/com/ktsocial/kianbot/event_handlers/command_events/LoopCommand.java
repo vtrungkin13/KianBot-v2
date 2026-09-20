@@ -3,7 +3,7 @@ package com.ktsocial.kianbot.event_handlers.command_events;
 import com.ktsocial.kianbot.event_handlers.button_events.CommandButtons;
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.LoopEventHandler;
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -21,7 +21,7 @@ public class LoopCommand extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
 
         TextChannel channel = (TextChannel) event.getChannel();
 

@@ -1,7 +1,7 @@
 package com.ktsocial.kianbot.event_handlers.command_events;
 
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.Guild;
@@ -19,8 +19,8 @@ public class QueueCommand extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-        final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
+        final BlockingQueue<AudioTrack> queue = musicManager.getScheduler().getQueue();
         if (queue.isEmpty()) {
             event.reply("Hàng đợi trống :o:").queue();
             return;

@@ -10,14 +10,14 @@ public class SkipEventHandler {
     public static MessageEmbed BuildEmbed(GuildMusicManager musicManager, AudioPlayer audioPlayer, TextChannel channel) {
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
 
-        musicManager.scheduler.setRepeating(false);
-        musicManager.scheduler.nextTrack();
+        musicManager.getScheduler().setRepeating(false);
+        musicManager.getScheduler().nextTrack();
 
         if (audioPlayer.getPlayingTrack() != null) {
-            embed.setTitle("Đã chuyển bài");
-            embed.addField("Đang phát:", audioPlayer.getPlayingTrack().getInfo().title, false);
+            embed.setTitle("ÄÃ£ chuyá»ƒn bÃ i");
+            embed.addField("Äang phÃ¡t:", audioPlayer.getPlayingTrack().getInfo().title, false);
         } else {
-            embed.setTitle("Không còn bài hát trong hàng đợi");
+            embed.setTitle("KhÃ´ng cÃ²n bÃ i hÃ¡t trong hÃ ng Ä‘á»£i");
         }
         return embed.build();
     }

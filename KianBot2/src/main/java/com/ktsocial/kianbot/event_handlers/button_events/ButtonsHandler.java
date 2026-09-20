@@ -2,7 +2,7 @@ package com.ktsocial.kianbot.event_handlers.button_events;
 
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.*;
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -23,8 +23,8 @@ public class ButtonsHandler extends ListenerAdapter {
         if (buttonId == null || guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-        final AudioPlayer audioPlayer = musicManager.audioPlayer;
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
+        final AudioPlayer audioPlayer = musicManager.getAudioPlayer();
 
         TextChannel channel = (TextChannel) event.getChannel();
 

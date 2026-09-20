@@ -10,8 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class TrackScheduler extends AudioEventAdapter {
-    public final AudioPlayer player;
-    public final BlockingQueue<AudioTrack> queue;
+    private final AudioPlayer player;
+    private final BlockingQueue<AudioTrack> queue;
     private boolean repeating = false;
 
 
@@ -27,7 +27,45 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void nextTrack() {
-        this.player.startTrack(this.queue.poll(), false);
+        AudioTrack nextTrack = this.queue.poll();
+        if (nextTrack != null) {
+            this.player.startTrack(nextTrack, false);
+        } else {
+            this.player.stopTrack();
+        }
+    }
+
+    public AudioPlayer getPlayer() {
+        return player;
+    }
+
+    public AudioTrack getPlayingTrack() {
+        return player.getPlayingTrack();
+    }
+
+    public BlockingQueue<AudioTrack> getQueue() {
+        return queue;
+    }
+
+    public void clearQueue() {
+        queue.clear();
+    }
+
+    public void stop() {
+        player.stopTrack();
+        queue.clear();
+    }
+
+    public void pause() {
+        player.setPaused(true);
+    }
+
+    public void resume() {
+        player.setPaused(false);
+    }
+
+    public boolean isPaused() {
+        return player.isPaused();
     }
 
     @Override

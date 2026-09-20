@@ -3,7 +3,7 @@ package com.ktsocial.kianbot.event_handlers.command_events;
 import com.ktsocial.kianbot.event_handlers.button_events.CommandButtons;
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.SkipEventHandler;
 import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
-import com.ktsocial.kianbot.lavaplayer.PlayerManager;
+import com.ktsocial.kianbot.music.MusicService;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -22,8 +22,8 @@ public class SkipCommand extends ListenerAdapter {
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-        final AudioPlayer audioPlayer = musicManager.audioPlayer;
+        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
+        final AudioPlayer audioPlayer = musicManager.getAudioPlayer();
 
         if (audioPlayer.getPlayingTrack() == null) {
             event.reply("Không có bài hát đang phát :interrobang:").queue();
