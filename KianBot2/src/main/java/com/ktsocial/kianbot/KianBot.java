@@ -17,8 +17,12 @@ import moe.kyokobot.libdave.NativeDaveFactory;
 import moe.kyokobot.libdave.jda.LDJDADaveSessionFactory;
 
 import javax.security.auth.login.LoginException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KianBot {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KianBot.class);
 
     private final Dotenv config;
 
@@ -31,6 +35,9 @@ public class KianBot {
     public KianBot() throws LoginException {
         config = Dotenv.configure().ignoreIfMissing().load();
         String token = config.get("TOKEN");
+        if (token == null || token.isBlank()) {
+            throw new IllegalStateException("Missing Discord bot token. Set TOKEN in .env or the environment.");
+        }
 
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
@@ -41,9 +48,9 @@ public class KianBot {
             DaveFactory daveFactory = new NativeDaveFactory();
             builder.setAudioModuleConfig(new AudioModuleConfig()
                     .withDaveSessionFactory(new LDJDADaveSessionFactory(daveFactory)));
-            System.out.println("Discord DAVE (End-to-End Encryption) enabled successfully.");
-        } catch (Throwable t) {
-            System.err.println("Warning: Could not enable Discord DAVE voice encryption (missing or incompatible native libraries for this platform). Falling back to standard voice connection. Error: " + t.getMessage());
+            LOGGER.info("Discord DAVE (End-to-End Encryption) enabled successfully.");
+        } catch (LinkageError | RuntimeException e) {
+            LOGGER.warn("Could not enable Discord DAVE voice encryption. Falling back to standard voice connection.", e);
         }
 
 //        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
@@ -61,9 +68,11 @@ public class KianBot {
 
     public static void main(String[] args) {
         try {
-            KianBot bot = new KianBot();
+            new KianBot();
         } catch (LoginException e) {
-            System.out.println("Error: bot token invalid!!!");
+            LOGGER.error("Unable to log in to Discord. Check the TOKEN value in the environment configuration.", e);
+        } catch (IllegalStateException e) {
+            LOGGER.error("Bot configuration is invalid: {}", e.getMessage());
         }
     }
 

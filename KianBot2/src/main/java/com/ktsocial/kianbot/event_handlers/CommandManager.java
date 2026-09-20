@@ -13,11 +13,15 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager extends ListenerAdapter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -124,9 +128,7 @@ public class CommandManager extends ListenerAdapter {
         commandData.add(Commands.slash("loop", "Lặp lại bài hát hiện tại!"));
 
         event.getJDA().updateCommands().addCommands(commandData).queue(
-                success -> {
-                },
-                error -> {
-                });
+                success -> LOGGER.info("Registered {} slash commands for JDA instance {}.", commandData.size(), event.getJDA().getSelfUser().getId()),
+                error -> LOGGER.error("Failed to register slash commands.", error));
     }
 }
