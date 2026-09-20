@@ -16,11 +16,15 @@ import java.net.URISyntaxException;
 
 public class PlayCommand {
 
-    public static void playCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
-        if (guild == null) {
-            return;
-        }
+    private final MusicService musicService;
+
+    public PlayCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         OptionMapping musicUrlOption = event.getOption("name-or-url");
         if (musicUrlOption == null) {
             event.reply("Lệnh không hợp lệ").queue();
@@ -28,28 +32,17 @@ public class PlayCommand {
         }
 
         //get the message channel which command is used
-        final MessageChannel channel = event.getChannel();
+        final MessageChannel channel = context.channel();
 
         //get the bot and voice state of bot
-        final Member bot = guild.getSelfMember();
-        final GuildVoiceState botVoiceState = bot.getVoiceState();
-        if (botVoiceState == null) {
-            return;
-        }
+        final GuildVoiceState botVoiceState = context.botVoiceState();
 
         //get the command user and voice state of command user
-        final Member member = event.getMember();
-        if (member == null) {
-            return;
-        }
-        final GuildVoiceState memberVoiceState = member.getVoiceState();
-        if (memberVoiceState == null) {
-            return;
-        }
+        final GuildVoiceState memberVoiceState = context.memberVoiceState();
 
         //check whether the bot is in voice channel
         if (!botVoiceState.inAudioChannel()) {
-            final AudioManager audioManager = event.getGuild().getAudioManager();
+            final AudioManager audioManager = context.guild().getAudioManager();
             final AudioChannel memChannel = memberVoiceState.getChannel();
             audioManager.openAudioConnection(memChannel);
         }

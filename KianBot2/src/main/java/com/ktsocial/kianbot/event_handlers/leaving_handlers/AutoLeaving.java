@@ -17,22 +17,23 @@ public class AutoLeaving extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
-        if (event.getChannelLeft() == null) {
+        VoiceUpdateContext context = VoiceUpdateContext.from(event);
+        if (context.channelLeft() == null) {
             return;
         }
-        if (event.getMember().getUser().isBot()) {
+        if (context.member().getUser().isBot()) {
             return;
         }
-        final AudioManager audioManager = event.getGuild().getAudioManager();
+        final AudioManager audioManager = context.guild().getAudioManager();
         if (audioManager.getConnectedChannel() == null) {
             return;
         }
-        if (!event.getChannelLeft().equals(audioManager.getConnectedChannel())) {
+        if (!context.channelLeft().equals(audioManager.getConnectedChannel())) {
             return;
         }
 
-        if (isAlone(event.getGuild())) {
-            musicService.stop(event.getGuild());
+        if (isAlone(context.guild())) {
+            musicService.stop(context.guild());
             audioManager.closeAudioConnection();
         }
     }

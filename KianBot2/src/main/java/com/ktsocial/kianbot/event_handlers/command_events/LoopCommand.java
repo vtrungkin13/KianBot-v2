@@ -14,15 +14,22 @@ import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.util.List;
 
-public class LoopCommand extends ListenerAdapter {
+public class LoopCommand {
 
-    public static void loopCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
+    private final MusicService musicService;
+
+    public LoopCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }
 
-        TextChannel channel = (TextChannel) event.getChannel();
+        TextChannel channel = (TextChannel) context.channel();
 
         AudioTrack track = musicService.getCurrentTrack(guild);
         boolean repeating = musicService.toggleRepeat(guild);

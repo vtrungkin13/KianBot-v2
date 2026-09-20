@@ -16,9 +16,10 @@ public class DisconnectEvent extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
-        final Member self = event.getGuild().getSelfMember();
-        if (event.getMember().equals(self)) {
-            musicService.disableRepeat(event.getGuild());
+        VoiceUpdateContext context = VoiceUpdateContext.from(event);
+        final Member self = context.guild().getSelfMember();
+        if (context.member().equals(self)) {
+            musicService.disableRepeat(context.guild());
         }
     }
 }

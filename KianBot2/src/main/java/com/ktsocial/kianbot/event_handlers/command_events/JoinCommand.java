@@ -9,13 +9,14 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 public class JoinCommand {
 
-    public static void joinCommandHandler(SlashCommandInteractionEvent event) {
-        Guild guild = event.getGuild();
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }
 
-        final Member member = event.getMember();
+        final Member member = context.member();
         if (member == null) {
             return;
         }

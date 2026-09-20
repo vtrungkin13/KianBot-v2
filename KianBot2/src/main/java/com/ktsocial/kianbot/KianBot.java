@@ -1,6 +1,7 @@
 package com.ktsocial.kianbot;
 
 import com.ktsocial.kianbot.event_handlers.CommandManager;
+import com.ktsocial.kianbot.event_handlers.ReadyHandler;
 import com.ktsocial.kianbot.event_handlers.button_events.ButtonsHandler;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.AutoLeaving;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.DisconnectEvent;
@@ -66,6 +67,7 @@ public class KianBot {
         //register commands
         shardManager.addEventListener(
                 new CommandManager(musicService),
+                new ReadyHandler(),
                 new AutoLeaving(musicService),
                 new DisconnectEvent(musicService),
                 new ButtonsHandler(musicService));
@@ -93,3 +95,4 @@ public class KianBot {
         return config;
     }
 }
+

@@ -11,10 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-public class QueueCommand extends ListenerAdapter {
+public class QueueCommand {
 
-    public static void queueCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
+    private final MusicService musicService;
+
+    public QueueCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }

@@ -13,10 +13,17 @@ import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.util.List;
 
-public class SkipCommand extends ListenerAdapter {
+public class SkipCommand {
 
-    public static void skipCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
+    private final MusicService musicService;
+
+    public SkipCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }
@@ -25,7 +32,7 @@ public class SkipCommand extends ListenerAdapter {
             event.reply("Không có bài hát đang phát :interrobang:").queue();
             return;
         }
-        TextChannel channel = (TextChannel) event.getChannel();
+        TextChannel channel = (TextChannel) context.channel();
 
         musicService.skip(guild);
         MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicService.getCurrentTrack(guild), channel);

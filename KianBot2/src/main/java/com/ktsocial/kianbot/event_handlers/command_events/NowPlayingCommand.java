@@ -7,10 +7,17 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class NowPlayingCommand extends ListenerAdapter {
+public class NowPlayingCommand {
 
-    public static void nowPlayingCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
+    private final MusicService musicService;
+
+    public NowPlayingCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }

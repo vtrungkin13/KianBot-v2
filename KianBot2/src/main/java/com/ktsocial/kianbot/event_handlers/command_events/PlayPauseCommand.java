@@ -13,14 +13,21 @@ import net.dv8tion.jda.api.components.actionrow.ActionRow;
 
 import java.util.List;
 
-public class PlayPauseCommand extends ListenerAdapter {
+public class PlayPauseCommand {
 
-    public static void playPauseCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
-        Guild guild = event.getGuild();
+    private final MusicService musicService;
+
+    public PlayPauseCommand(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
+    public void handle(CommandContext context) {
+        SlashCommandInteractionEvent event = context.event();
+        Guild guild = context.guild();
         if (guild == null) {
             return;
         }
-        TextChannel channel = (TextChannel) event.getChannel();
+        TextChannel channel = (TextChannel) context.channel();
         boolean paused = musicService.togglePause(guild);
         MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(paused, channel);
         List<Button> buttons = CommandButtons.buttons;
