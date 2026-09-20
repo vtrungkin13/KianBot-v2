@@ -10,9 +10,9 @@ public class PlayPauseEventHandler {
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
 
         if (paused) {
-            embed.setTitle("Táº¡m dá»«ng nháº¡c :pause_button:");
+            embed.setTitle("Tạm dừng nhạc :pause_button:");
         } else {
-            embed.setTitle("Tiáº¿p tá»¥c phÃ¡t nháº¡c :arrow_forward:");
+            embed.setTitle("Tiếp tục phát nhạc :arrow_forward:");
         }
 
         return embed.build();

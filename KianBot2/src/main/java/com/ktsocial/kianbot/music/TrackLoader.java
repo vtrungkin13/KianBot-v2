@@ -38,7 +38,7 @@ public final class TrackLoader {
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.getScheduler().queue(track);
-                addTrackField(embed, "ThÃƒÂªm vÃƒÂ o hÃƒÂ ng Ã„â€˜Ã¡Â»Â£i:", track);
+                addTrackField(embed, "Thêm vào hàng đợi:", track);
                 sendEmbed(channel, embed);
             }
 
@@ -53,11 +53,11 @@ public final class TrackLoader {
                 if (trackUrl.startsWith("ytsearch:")) {
                     AudioTrack track = tracks.getFirst();
                     musicManager.getScheduler().queue(track);
-                    addTrackField(embed, "ThÃƒÂªm vÃƒÂ o hÃƒÂ ng Ã„â€˜Ã¡Â»Â£i:", track);
+                    addTrackField(embed, "Thêm vào hàng đợi:", track);
                 } else {
                     tracks.forEach(musicManager.getScheduler()::queue);
-                    embed.addField("ThÃƒÂªm vÃƒÂ o hÃƒÂ ng Ã„â€˜Ã¡Â»Â£i:",
-                            ":notes: " + tracks.size() + " bÃƒÂ i hÃƒÂ¡t tÃ¡Â»Â« " + playlist.getName(), false);
+                    embed.addField("Thêm vào hàng đợi:",
+                            ":notes: " + tracks.size() + " bài hát từ" + playlist.getName(), false);
                 }
 
                 sendEmbed(channel, embed);
@@ -71,7 +71,7 @@ public final class TrackLoader {
             @Override
             public void loadFailed(FriendlyException exception) {
                 LOGGER.warn("Failed to load track '{}': {}", trackUrl, exception.getMessage());
-                channel.sendMessage("KhÃƒÂ´ng load Ã„â€˜Ã†Â°Ã¡Â»Â£c nhÃ¡ÂºÂ¡c :x:").queue();
+                channel.sendMessage("Không load được nhạc :x:").queue();
             }
         });
     }
@@ -81,7 +81,7 @@ public final class TrackLoader {
                 .setAuthor(channel.getJDA().getSelfUser().getName(), null,
                         channel.getJDA().getSelfUser().getAvatarUrl())
                 .setColor(Color.decode("#eba22b"))
-                .setTitle("TÃƒÂ¬m thÃ¡ÂºÂ¥y nhÃ¡ÂºÂ¡c!");
+                .setTitle("Tìm thấy nhạc!");
     }
 
     private void addTrackField(EmbedBuilder embed, String title, AudioTrack track) {
@@ -95,7 +95,7 @@ public final class TrackLoader {
     }
 
     private void noMatches(TextChannel channel) {
-        channel.sendMessage("KhÃƒÂ´ng tÃƒÂ¬m thÃ¡ÂºÂ¥y nhÃ¡ÂºÂ¡c :o:").queue();
+        channel.sendMessage("Không tìm thấy nhạc :o:").queue();
     }
 
     private String formatTime(long seconds) {

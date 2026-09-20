@@ -48,7 +48,7 @@ public class ButtonsHandler extends ListenerAdapter {
         } catch (RuntimeException exception) {
             LOGGER.error("Unhandled error while processing button '{}'.", event.getComponentId(), exception);
             if (!event.isAcknowledged()) {
-                event.reply("Đã xảy ra lỗi khi xử lý thao tác. Vui lòng thử lại sau.")
+            event.reply("Đã xảy ra lỗi khi xử lý thao tác. Vui lòng thử lại sau.")
                         .setEphemeral(true)
                         .queue(null, error -> LOGGER.warn("Failed to send button error response.", error));
             }
@@ -75,7 +75,7 @@ public class ButtonsHandler extends ListenerAdapter {
 
     private void handleStop(ButtonContext context) {
         musicService.stop(context.guild());
-        context.event().reply("Dừng nhạc :stop_button:").queue();
+            context.event().reply("Dừng nhạc :stop_button:").queue();
     }
 
     private void handleRepeat(ButtonContext context) {

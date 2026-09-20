@@ -22,7 +22,7 @@ public class JoinCommand {
         }
         final GuildVoiceState memberVoiceState = member.getVoiceState();
         if (memberVoiceState == null || !memberVoiceState.inAudioChannel()) {
-            event.reply("Bạn chưa vào kênh thoại").queue();
+            event.reply("Bạn chưa vào kênh thoại.").queue();
             return;
         }
 

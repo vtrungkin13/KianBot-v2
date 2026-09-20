@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.YoutubeSourceOptions;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -30,8 +31,19 @@ public final class MusicService {
 
     public static AudioPlayerManager createDefaultAudioPlayerManager() {
         AudioPlayerManager manager = new DefaultAudioPlayerManager();
-        manager.registerSourceManager(new YoutubeAudioSourceManager(true));
-        AudioSourceManagers.registerRemoteSources(manager);
+        YoutubeSourceOptions options = new YoutubeSourceOptions()
+                .setRemoteCipher("https://cipher.kikkia.dev/", null, "KianBot");
+
+        YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager(
+                options,
+                YoutubeAudioSourceManager.DEFAULT_CLIENTS
+        );
+
+        manager.registerSourceManager(youtube);
+        AudioSourceManagers.registerRemoteSources(
+                manager,
+                YoutubeAudioSourceManager.class
+        );
         return manager;
     }
 

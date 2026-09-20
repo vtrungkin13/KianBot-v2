@@ -27,7 +27,7 @@ public class PlayCommand {
         Guild guild = context.guild();
         OptionMapping musicUrlOption = event.getOption("name-or-url");
         if (musicUrlOption == null) {
-            event.reply("Lệnh không hợp lệ").queue();
+            event.reply("Lệnh không hợp lệ.").queue();
             return;
         }
 
@@ -54,7 +54,7 @@ public class PlayCommand {
 
         TextChannel textChannel = (TextChannel) channel;
         musicService.loadAndPlay(textChannel, link);
-        event.reply("Đang load nhạc!").queue();
+        event.reply("Đang tải nhạc!").queue();
     }
 
     private static boolean isUrl(String url) {

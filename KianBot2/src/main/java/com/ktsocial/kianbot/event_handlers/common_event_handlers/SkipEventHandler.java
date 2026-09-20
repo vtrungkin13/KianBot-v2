@@ -10,10 +10,10 @@ public class SkipEventHandler {
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
 
         if (currentTrack != null) {
-            embed.setTitle("ÄÃ£ chuyá»ƒn bÃ i");
-            embed.addField("Äang phÃ¡t:", currentTrack.getInfo().title, false);
+            embed.setTitle("Đã chuyển bài");
+            embed.addField("Đang phát:", currentTrack.getInfo().title, false);
         } else {
-            embed.setTitle("KhÃ´ng cÃ²n bÃ i hÃ¡t trong hÃ ng Ä‘á»£i");
+            embed.setTitle("Không còn bài hát trong hàng đợi");
         }
         return embed.build();
     }

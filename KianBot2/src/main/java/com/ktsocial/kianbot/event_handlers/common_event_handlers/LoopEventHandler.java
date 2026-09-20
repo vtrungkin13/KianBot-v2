@@ -13,9 +13,9 @@ public class LoopEventHandler {
 
         EmbedBuilder embed = EmbedInitiation.ChannelInitiate(channel);
         if (repeating) {
-            embed.setTitle("Äang láº·p láº¡i " + info.title);
+            embed.setTitle("Đang lặp lại " + info.title);
         } else {
-            embed.setTitle("Há»§y láº·p láº¡i " + info.title);
+            embed.setTitle("Dừng lặp lại " + info.title);
         }
 
         return embed.build();
