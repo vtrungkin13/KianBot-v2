@@ -2,7 +2,6 @@ package com.ktsocial.kianbot.event_handlers.command_events;
 
 import com.ktsocial.kianbot.event_handlers.button_events.CommandButtons;
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.PlayPauseEventHandler;
-import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
 import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -16,14 +15,14 @@ import java.util.List;
 
 public class PlayPauseCommand extends ListenerAdapter {
 
-    public static void playPauseCommandHandler(SlashCommandInteractionEvent event) {
+    public static void playPauseCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
         Guild guild = event.getGuild();
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
         TextChannel channel = (TextChannel) event.getChannel();
-        MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(musicManager, channel);
+        boolean paused = musicService.togglePause(guild);
+        MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(paused, channel);
         List<Button> buttons = CommandButtons.buttons;
 
         event.replyEmbeds(playPauseEmbed).addComponents(ActionRow.of(buttons)).queue();

@@ -1,9 +1,7 @@
 package com.ktsocial.kianbot.event_handlers.button_events;
 
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.*;
-import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
 import com.ktsocial.kianbot.music.MusicService;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -16,6 +14,12 @@ import java.util.List;
 
 public class ButtonsHandler extends ListenerAdapter {
 
+    private final MusicService musicService;
+
+    public ButtonsHandler(MusicService musicService) {
+        this.musicService = musicService;
+    }
+
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
         String buttonId = event.getComponentId();
@@ -23,8 +27,6 @@ public class ButtonsHandler extends ListenerAdapter {
         if (buttonId == null || guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
-        final AudioPlayer audioPlayer = musicManager.getAudioPlayer();
 
         TextChannel channel = (TextChannel) event.getChannel();
 
@@ -32,23 +34,26 @@ public class ButtonsHandler extends ListenerAdapter {
 
         switch (buttonId) {
             case "playPauseBtn" -> {
-                MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(musicManager, channel);
+                boolean paused = musicService.togglePause(guild);
+                MessageEmbed playPauseEmbed = PlayPauseEventHandler.BuildEmbed(paused, channel);
                 event.replyEmbeds(playPauseEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
             case "nextTrackBtn" -> {
-                if (audioPlayer.getPlayingTrack() == null) {
+                if (musicService.getCurrentTrack(guild) == null) {
                     event.reply("Không có bài hát đang phát :interrobang:").queue();
                     return;
                 }
-                MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicManager, audioPlayer, channel);
+                musicService.skip(guild);
+                MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicService.getCurrentTrack(guild), channel);
                 event.replyEmbeds(skipEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
             case "stopBtn" -> {
-                StopEventHandler.Handle(musicManager);
+                musicService.stop(guild);
                 event.reply("Dừng nhạc :stop_button:").queue();
             }
             case "repeatBtn" -> {
-                MessageEmbed loopEmbed = LoopEventHandler.BuildEmbed(musicManager, channel);
+                boolean repeating = musicService.toggleRepeat(guild);
+                MessageEmbed loopEmbed = LoopEventHandler.BuildEmbed(musicService.getCurrentTrack(guild), repeating, channel);
                 event.replyEmbeds(loopEmbed).addComponents(ActionRow.of(buttons)).queue();
             }
         }

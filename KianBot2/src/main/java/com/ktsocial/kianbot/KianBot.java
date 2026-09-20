@@ -4,6 +4,8 @@ import com.ktsocial.kianbot.event_handlers.CommandManager;
 import com.ktsocial.kianbot.event_handlers.button_events.ButtonsHandler;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.AutoLeaving;
 import com.ktsocial.kianbot.event_handlers.leaving_handlers.DisconnectEvent;
+import com.ktsocial.kianbot.music.MusicService;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -43,6 +45,9 @@ public class KianBot {
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.playing("music! || /help"));
 
+        AudioPlayerManager audioPlayerManager = MusicService.createDefaultAudioPlayerManager();
+        MusicService musicService = new MusicService(audioPlayerManager);
+
         builder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
         try {
             DaveFactory daveFactory = new NativeDaveFactory();
@@ -60,10 +65,10 @@ public class KianBot {
 
         //register commands
         shardManager.addEventListener(
-                new CommandManager(),
-                new AutoLeaving(),
-                new DisconnectEvent(),
-                new ButtonsHandler());
+                new CommandManager(musicService),
+                new AutoLeaving(musicService),
+                new DisconnectEvent(musicService),
+                new ButtonsHandler(musicService));
     }
 
     public static void main(String[] args) {

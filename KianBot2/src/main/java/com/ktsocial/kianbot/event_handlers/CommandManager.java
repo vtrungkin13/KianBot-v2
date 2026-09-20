@@ -1,6 +1,7 @@
 package com.ktsocial.kianbot.event_handlers;
 
 import com.ktsocial.kianbot.event_handlers.command_events.*;
+import com.ktsocial.kianbot.music.MusicService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -22,6 +23,11 @@ import java.util.List;
 public class CommandManager extends ListenerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
+    private final MusicService musicService;
+
+    public CommandManager(MusicService musicService) {
+        this.musicService = musicService;
+    }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -74,14 +80,14 @@ public class CommandManager extends ListenerAdapter {
                 }
             }
             switch (command) {
-                case "play" -> PlayCommand.playCommandHandler(event);
+                case "play" -> PlayCommand.playCommandHandler(event, musicService);
                 case "join" -> JoinCommand.joinCommandHandler(event);
-                case "pause" -> PlayPauseCommand.playPauseCommandHandler(event);
-                case "skip" -> SkipCommand.skipCommandHandler(event);
-                case "stop" -> StopCommand.stopCommandHandler(event);
-                case "loop" -> LoopCommand.loopCommandHandler(event);
-                case "nowplaying" -> NowPlayingCommand.nowPlayingCommandHandler(event);
-                case "queue" -> QueueCommand.queueCommandHandler(event);
+                case "pause" -> PlayPauseCommand.playPauseCommandHandler(event, musicService);
+                case "skip" -> SkipCommand.skipCommandHandler(event, musicService);
+                case "stop" -> StopCommand.stopCommandHandler(event, musicService);
+                case "loop" -> LoopCommand.loopCommandHandler(event, musicService);
+                case "nowplaying" -> NowPlayingCommand.nowPlayingCommandHandler(event, musicService);
+                case "queue" -> QueueCommand.queueCommandHandler(event, musicService);
             }
         }
     }

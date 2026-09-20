@@ -1,6 +1,5 @@
 package com.ktsocial.kianbot.event_handlers.command_events;
 
-import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
 import com.ktsocial.kianbot.music.MusicService;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -14,13 +13,12 @@ import java.util.concurrent.BlockingQueue;
 
 public class QueueCommand extends ListenerAdapter {
 
-    public static void queueCommandHandler(SlashCommandInteractionEvent event) {
+    public static void queueCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
         Guild guild = event.getGuild();
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
-        final BlockingQueue<AudioTrack> queue = musicManager.getScheduler().getQueue();
+        final List<AudioTrack> queue = musicService.getQueue(guild);
         if (queue.isEmpty()) {
             event.reply("Hàng đợi trống :o:").queue();
             return;

@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 
 public class PlayCommand {
 
-    public static void playCommandHandler(SlashCommandInteractionEvent event) {
+    public static void playCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
         Guild guild = event.getGuild();
         if (guild == null) {
             return;
@@ -60,7 +60,7 @@ public class PlayCommand {
         }
 
         TextChannel textChannel = (TextChannel) channel;
-        MusicService.getInstance().loadAndPlay(textChannel, link);
+        musicService.loadAndPlay(textChannel, link);
         event.reply("Đang load nhạc!").queue();
     }
 

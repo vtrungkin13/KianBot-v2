@@ -2,9 +2,7 @@ package com.ktsocial.kianbot.event_handlers.command_events;
 
 import com.ktsocial.kianbot.event_handlers.button_events.CommandButtons;
 import com.ktsocial.kianbot.event_handlers.common_event_handlers.SkipEventHandler;
-import com.ktsocial.kianbot.lavaplayer.GuildMusicManager;
 import com.ktsocial.kianbot.music.MusicService;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -17,21 +15,20 @@ import java.util.List;
 
 public class SkipCommand extends ListenerAdapter {
 
-    public static void skipCommandHandler(SlashCommandInteractionEvent event) {
+    public static void skipCommandHandler(SlashCommandInteractionEvent event, MusicService musicService) {
         Guild guild = event.getGuild();
         if (guild == null) {
             return;
         }
-        final GuildMusicManager musicManager = MusicService.getInstance().getMusicManager(guild);
-        final AudioPlayer audioPlayer = musicManager.getAudioPlayer();
 
-        if (audioPlayer.getPlayingTrack() == null) {
+        if (musicService.getCurrentTrack(guild) == null) {
             event.reply("Không có bài hát đang phát :interrobang:").queue();
             return;
         }
         TextChannel channel = (TextChannel) event.getChannel();
 
-        MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicManager, audioPlayer, channel);
+        musicService.skip(guild);
+        MessageEmbed skipEmbed = SkipEventHandler.BuildEmbed(musicService.getCurrentTrack(guild), channel);
         List<Button> buttons = CommandButtons.buttons;
 
         event.replyEmbeds(skipEmbed).addComponents(ActionRow.of(buttons)).queue();
